@@ -1,5 +1,5 @@
 ﻿#include <iostream>
-#include "Data.h"
+#include "SvmDualLagrangeProblemSolver.h"
 
 constexpr char CLASS_FIRST = 1;
 constexpr char CLASS_SECOND = -1;
@@ -15,4 +15,7 @@ void get_data(std::vector<TrainingDataVector>& out_data)
 int main()
 {
 	std::cout << "Hello World!\n";
+	std::vector<TrainingDataVector> data;
+	get_data(data);
+	SvmDualLagrangeProblemSolver::get_optimal_lagrange_multiplifiers(data);
 }

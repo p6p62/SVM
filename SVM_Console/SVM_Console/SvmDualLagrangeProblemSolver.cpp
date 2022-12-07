@@ -1,4 +1,8 @@
 #include "SvmDualLagrangeProblemSolver.h"
+
+#include <CGAL/QP_functions.h>
+#include <CGAL/QP_models.h>
+
 #include <numeric>
 #include <algorithm>
 
@@ -53,12 +57,10 @@ std::vector<number_elem_t> SvmDualLagrangeProblemSolver::get_optimal_lagrange_mu
 	std::vector<number_elem_t> lagrange_multiplifiers(training_input.size(), 0);
 
 	matrix_t hessi_matrix;
+	hessi_matrix.assign(training_input.size(), DataVector(training_input.size()));
 	calculate_hessi_matrix(training_input, hessi_matrix);
 
-	while (!is_zero(gradient(lagrange_multiplifiers)))
-	{
 
-	}
 
 	return lagrange_multiplifiers;
 }
