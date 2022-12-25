@@ -1,19 +1,21 @@
 #pragma once
 #include "Data.h"
+#include "MathFuncions.h"
+
+using namespace math_functions;
 
 class SvmDualLagrangeProblemSolver
 {
 public:
-	using matrix_t = std::vector<std::vector<number_elem_t>>;
-
-public:
-	// погрешность нулевых значений для реализации численного метода 
-	static constexpr number_elem_t ZERO_ACCURACY{ 1e-6 };
-
-private:
-	// шаг приращения переменных для сохранения ограничений в нуле
-	static constexpr number_elem_t VARIABLE_CHANGING_STEP{ ZERO_ACCURACY / 2 };
-
-public:
-	static std::vector<number_elem_t> get_optimal_lagrange_multiplifiers(const std::vector<TrainingDataVector>& training_input);
+	/// <summary>
+	/// Вычисляет оптимальные значения множителей Лагранжа для двойственной задачи поиска параметров оптимальной гиперплоскости
+	/// </summary>
+	/// <param name="training_input">Обучающая выборка</param>
+	/// <param name="kernel">Ядро (по умолчанию - скалярное произведение)</param>
+	/// <returns>Вектор множителей Лагранжа</returns>
+	static std::vector<number_elem_t> get_optimal_lagrange_multiplifiers
+	(
+		const std::vector<TrainingDataVector>& training_input,
+		const kernel_t& kernel = math_functions::scalar_product
+	);
 };
