@@ -21,8 +21,7 @@ BinaryLinearSVM::BinaryLinearSVM(const ClassifierModel& model)
 
 void BinaryLinearSVM::train_svm(const std::vector<TrainingDataVector>& training_samples, const kernel_t& kernel)
 {
-	if (!check_training_samples(training_samples))
-		throw std::invalid_argument{ "Обучающая выборка пуста или содержит данные разной размерности!" };
+	check_training_samples(training_samples);
 
 	std::vector<number_elem_t> lagrange_multiplifiers{ SvmDualLagrangeProblemSolver::get_optimal_lagrange_multiplifiers(training_samples, kernel) };
 	std::vector<size_t> support_vector_indexes;
@@ -45,15 +44,29 @@ void BinaryLinearSVM::train_svm(const std::vector<TrainingDataVector>& training_
 	model_.offset = offset;
 }
 
-constexpr bool BinaryLinearSVM::check_training_samples(const std::vector<TrainingDataVector>& training_samples)
+constexpr void BinaryLinearSVM::check_training_samples(const std::vector<TrainingDataVector>& training_samples)
 {
 	bool result{ training_samples.empty() };
 	if (!result)
 	{
+		// проверка одинаковой размерности
 		const size_t vector_size{ training_samples[0].data_vector.size() };
 		result = std::all_of(training_samples.begin(), training_samples.end(), [vector_size](const TrainingDataVector& row) -> bool {return row.data_vector.size() == vector_size; });
+		if (!result)
+			throw std::invalid_argument("Обучающая выборка содержит данные разной размерности!");
+
+		// проверка на наличие объектов и одного, и второго класса
+		bool have_first{ false }, have_second{ false };
+		for (const TrainingDataVector& row : training_samples)
+		{
+			if (!(have_first = row.class_label == ClassLabel::FIRST))
+				have_second = true;
+			if (have_first && have_second)
+				break;
+		}
+		if (!(have_first && have_second))
+			throw std::invalid_argument("Обучающая выборка содержит примеры только одного класса!");
 	}
-	return result;
 }
 
 ClassLabel BinaryLinearSVM::classify(const DataVector& x) const

@@ -36,7 +36,7 @@ public:
 	BinaryLinearSVM(const std::vector<TrainingDataVector>& training_samples, const kernel_t& kernel = scalar_product);
 
 public:
-	static constexpr bool check_training_samples(const std::vector<TrainingDataVector>& training_samples);
+	static constexpr void check_training_samples(const std::vector<TrainingDataVector>& training_samples);
 	void train_svm(const std::vector<TrainingDataVector>& training_samples, const kernel_t& kernel = scalar_product);
 	ClassLabel classify(const DataVector& x) const;
 	ClassifierModel get_model() const noexcept { return model_; }
