@@ -19,8 +19,10 @@ public:
 	/// <returns>Вектор векторов данных, разделённых по запятым</returns>
 	static CSV_t<std::string> read_csv(std::istream& input);
 
-	template <typename T>
+	template<typename T>
 	static bool is_rows_same_length(const CSV_t<T>& csv_data) noexcept;
+
+	static void parse_doubles(const CSV_t<std::string>& in, CSV_t<double>& out, bool have_header = true);
 };
 
 template<typename T>

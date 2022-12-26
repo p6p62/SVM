@@ -18,3 +18,17 @@ CSVReader::CSV_t<std::string> CSVReader::read_csv(std::istream& input)
 	}
 	return out;
 }
+
+void CSVReader::parse_doubles(const CSV_t<std::string>& in, CSV_t<double>& out, bool have_header)
+{
+	size_t index_offset{ have_header && 1 };
+	if (out.size() < in.size())
+		out.resize(in.size() - index_offset);
+	for (size_t i{ index_offset }, o{ 0 }; i < in.size(); ++i, ++o)
+	{
+		if (out[o].size() < in[i].size())
+			out[o].resize(in[i].size());
+		for (size_t j{ 0 }; j < in[i].size(); ++j)
+			out[o][j] = std::stod(in[i][j]);
+	}
+}

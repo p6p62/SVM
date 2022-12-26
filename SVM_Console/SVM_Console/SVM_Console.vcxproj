@@ -131,6 +131,7 @@
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClCompile Include="BinaryLinearSVM.cpp" />
+    <ClCompile Include="ClassifierModelIO.cpp" />
     <ClCompile Include="CSVReader.cpp" />
     <ClCompile Include="MathFuncions.cpp" />
     <ClCompile Include="SvmDualLagrangeProblemSolver.cpp" />
@@ -138,6 +139,7 @@
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="BinaryLinearSVM.h" />
+    <ClInclude Include="ClassifierModelIO.h" />
     <ClInclude Include="CSVReader.h" />
     <ClInclude Include="Data.h" />
     <ClInclude Include="MathFuncions.h" />
