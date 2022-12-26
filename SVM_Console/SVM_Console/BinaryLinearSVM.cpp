@@ -59,7 +59,9 @@ constexpr void BinaryLinearSVM::check_training_samples(const std::vector<Trainin
 		bool have_first{ false }, have_second{ false };
 		for (const TrainingDataVector& row : training_samples)
 		{
-			if (!(have_first = row.class_label == ClassLabel::FIRST))
+			if (row.class_label == ClassLabel::FIRST)
+				have_first = true;
+			else
 				have_second = true;
 			if (have_first && have_second)
 				break;

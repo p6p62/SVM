@@ -73,7 +73,15 @@ std::vector<number_elem_t> SvmDualLagrangeProblemSolver::get_optimal_lagrange_mu
 		dual_lagrange_task.set_l(i, true);
 	}
 
-	CGAL::Quadratic_program_solution<CGAL::MP_Float> solution{ CGAL::solve_quadratic_program(dual_lagrange_task, CGAL::MP_Float{}) };
+	CGAL::Quadratic_program_solution<CGAL::MP_Float> solution;
+	try
+	{
+		solution = CGAL::solve_quadratic_program(dual_lagrange_task, CGAL::MP_Float{});
+	}
+	catch (const std::exception&)
+	{
+		throw std::invalid_argument("\nОшибка при обучении классификатора! Возможно, выборка не является линейно-разделимой");
+	}
 	std::vector<number_elem_t> lagrange_multiplifiers;
 	std::transform
 	(
