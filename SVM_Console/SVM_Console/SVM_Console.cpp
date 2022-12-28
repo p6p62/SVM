@@ -1,5 +1,6 @@
 ﻿#include <iostream>
 #include <fstream>
+#include <format>
 #include "BinaryLinearSVM.h"
 #include "CSVReader.h"
 #include "ClassifierModelIO.h"
@@ -143,8 +144,20 @@ void train_mode(int argc, char** argv)
 		v.class_label = *row.rbegin() >= 0 ? ClassLabel::FIRST : ClassLabel::SECOND;
 	}
 
-	ClassifierModelIO::save_svm_config(BinaryLinearSVM{ training_data }.get_model(), argv[3]);
-	std::cout << "Настройка модели завершена успешно!\n";
+	const BinaryLinearSVM::ClassifierModel& model{ BinaryLinearSVM{training_data}.get_model() };
+	ClassifierModelIO::save_svm_config(model, argv[3]);
+	std::cout << "Настройка модели завершена успешно!\nОпорные векторы:\n";
+	for (const auto& pair : model.support_vectors)
+	{
+		std::string v_str;
+		for (number_elem_t x_i : pair.first.data_vector)
+		{
+			v_str += std::format("{},", x_i);
+		}
+		v_str.pop_back();
+		v_str += std::format("\t{}", pair.first.class_label == ClassLabel::FIRST ? "FIRST" : "SECOND");
+		std::cout << v_str << std::endl;
+	}
 }
 
 void classify_mode(int argc, char** argv)
